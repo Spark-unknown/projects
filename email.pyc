@@ -1,0 +1,51 @@
+import subprocess
+import sys
+from reportlab.platypus import SimpleDocTemplate, Table, Paragraph, TableStyle
+from reportlab.lib import colors
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.styles import getSampleStyleSheet
+from PyPDF2 import PdfFileWriter
+
+
+def generate_receipt(name):
+    title_text = f"{name}'s Receipt"
+    name_text = name
+
+    DATA = [
+        ["Date", "Name", "Subscription", "Price (Rs.)"],
+        ["16/11/2020", name_text, "Lifetime", "10,999.00/-"],
+        ["16/11/2020", "Live Session", "6 months", "999.00/-"],
+        ["Sub Total", "", "", "11,998.00/-"],
+        ["Discount", "", "", "-3,000.00/-"],
+        ["Total", "", "", "8,998.00/-"],
+    ]
+
+    pdf = SimpleDocTemplate("receipt.pdf", pagesize=A4, title=f"{name} Receipt")
+    styles = getSampleStyleSheet()
+    title_style = styles["Heading1"]
+    title_style.alignment = 1
+    title = Paragraph(title_text, title_style)
+
+    style = TableStyle(
+        [
+            ("BOX", (0, 0), (-1, -1), 1, colors.black),
+            ("GRID", (0, 0), (4, 4), 1, colors.black),
+            ("BACKGROUND", (0, 0), (3, 0), colors.gray),
+            ("TEXTCOLOR", (0, 0), (-1, 0), colors.whitesmoke),
+            ("ALIGN", (0, 0), (-1, -1), "CENTER"),
+            ("BACKGROUND", (0, 1), (-1, -1), colors.beige),
+        ]
+    )
+
+    table = Table(DATA, style=style)
+
+    try:
+        with open('receipt.pdf', 'wb') as f:
+            pdf.build([title, table])
+        print("Receipt generated successfully!")
+    except Exception as e:
+        print(f"Error generating receipt: {str(e)}")
+
+
+name = input("Enter your name ")
+generate_receipt(name)

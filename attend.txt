@@ -1,0 +1,10 @@
+John Doe,Present
+Jane Smith,Absent
+Bob Johnson,Present
+Alice Brown,Absent
+Mike Davis,Present
+Emily Taylor,Absent
+David Lee,Present
+Sophia Patel,Absent
+Kevin White,Present
+Olivia Martin,Absent
